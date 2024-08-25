@@ -15,16 +15,98 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <StackPanel Margin="10,3" Orientation="Horizontal">
             <TextBox
                 MinWidth="470"
                 IsReadOnly="False"
-                Tag="Mod过滤" />
-            <eda:CandyButton Height="20" Content="全选" />
-            <eda:CandyButton Height="20" Content="反选" />
-            <eda:CandyButton Height="20" Content="下载" />
+                Tag="Mod过滤"
+                Text="{Binding Filter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <eda:CandyButton
+                Height="20"
+                Command="{Binding HandleCommand}"
+                CommandParameter="1"
+                Content="全选" />
+            <eda:CandyButton
+                Height="20"
+                Command="{Binding HandleCommand}"
+                CommandParameter="2"
+                Content="全不选" />
+            <eda:CandyButton
+                Height="20"
+                Command="{Binding HandleCommand}"
+                CommandParameter="3"
+                Content="下载" />
         </StackPanel>
+        <StackPanel
+            Grid.Row="1"
+            Margin="10,3"
+            HorizontalAlignment="Left">
+            <eda:CandyButton
+                Height="20"
+                Command="{Binding SelectCommand}"
+                CommandParameter="{Binding Tree.Root}"
+                Content="上一页" />
+        </StackPanel>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <ListBox
+                Background="Transparent"
+                BorderThickness="0"
+                ItemsSource="{Binding Tree.KeyValue}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="45" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{DynamicResource lbl}" Text="{Binding Index}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="0,0,5,0"
+                                Style="{DynamicResource lbl}"
+                                Text="{Binding FileSize}" />
+                            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                <CheckBox
+                                    VerticalAlignment="Center"
+                                    IsChecked="{Binding Check}"
+                                    Visibility="{Binding Show}" />
+                                <Button
+                                    Command="{Binding DataContext.SelectCommand, ElementName=Index}"
+                                    CommandParameter="{Binding Value}"
+                                    Content="{Binding Key}"
+                                    Style="{DynamicResource LinkBtn}" />
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <StackPanel Grid.Column="1" HorizontalAlignment="Left">
+                <TextBlock Style="{DynamicResource lbl}" Text="下载列表:" />
+                <ListBox
+                    Background="Transparent"
+                    BorderThickness="0"
+                    ItemsSource="{Binding Downs}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Style="{DynamicResource lbl}">
+                                <Run Text="{Binding Key}" />
+                                <Run Text="   " />
+                                <Run Text="{Binding Process}" />
+                                <Run Text="   " />
+                                <Run Text="{Binding State}" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

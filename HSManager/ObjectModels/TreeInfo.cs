@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace HSManager.ObjectModels
 {
@@ -30,5 +32,7 @@ namespace HSManager.ObjectModels
         private double _Process;
         [ObservableProperty]
         private string _FileSize;
+        public Visibility Show=> Path.GetExtension(this.Value.ToString()).Contains(".zipmod")?Visibility.Visible:Visibility.Collapsed;
+        public string State => Process >= 100 ? "下载完成" : "下载中";
     }
 }
