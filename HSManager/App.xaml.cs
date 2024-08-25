@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using XExten.Advance.IocFramework;
 using XExten.Advance.LinqFramework;
+using XExten.Advance.NetFramework;
 
 namespace HSManager
 {
@@ -16,6 +17,8 @@ namespace HSManager
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            NetFactoryExtension.RegisterNetFramework();
 
             this.GetType().Assembly.GetTypes().Where(t => t.BaseType == typeof(UserControl)).ForEnumerEach(ctrl =>
             {

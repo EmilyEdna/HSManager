@@ -120,6 +120,7 @@
                             </StackPanel>
                             <eda:CandyButton
                                 Grid.Column="2"
+                                Width="95"
                                 Command="{Binding DataContext.RenameCommand, ElementName=Index}"
                                 CommandParameter="{Binding .}"
                                 Content="重命名" />

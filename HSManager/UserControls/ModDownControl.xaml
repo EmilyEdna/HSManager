@@ -1,12 +1,30 @@
-﻿<UserControl x:Class="HSManager.UserControls.ModDownControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:HSManager.UserControls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+﻿<UserControl
+    x:Class="HSManager.UserControls.ModDownControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:eda="https://github.com/EmilyEdna"
+    xmlns:local="clr-namespace:HSManager.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:HSManager.ViewModels"
+    x:Name="Index"
+    d:DataContext="{d:DesignInstance vm:ModDownViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Margin="10,3" Orientation="Horizontal">
+            <TextBox
+                MinWidth="470"
+                IsReadOnly="False"
+                Tag="Mod过滤" />
+            <eda:CandyButton Height="20" Content="全选" />
+            <eda:CandyButton Height="20" Content="反选" />
+            <eda:CandyButton Height="20" Content="下载" />
+        </StackPanel>
     </Grid>
 </UserControl>
