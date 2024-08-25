@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35219.272
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HSManager", "HSManager\HSManager.csproj", "{D896BD3A-7C2B-4199-AFF6-A451EA2CA594}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Unpack3d", "Unpack3d\Unpack3d.pyproj", "{F5DC62B9-1F98-4314-B4C8-6434AF2E8881}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D896BD3A-7C2B-4199-AFF6-A451EA2CA594}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D896BD3A-7C2B-4199-AFF6-A451EA2CA594}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D896BD3A-7C2B-4199-AFF6-A451EA2CA594}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D896BD3A-7C2B-4199-AFF6-A451EA2CA594}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5DC62B9-1F98-4314-B4C8-6434AF2E8881}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5DC62B9-1F98-4314-B4C8-6434AF2E8881}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {350D5B6A-6DA7-4D52-A250-133CD6694B58}
+	EndGlobalSection
+EndGlobal
