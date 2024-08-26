@@ -32,7 +32,8 @@ namespace HSManager.ObjectModels
         private double _Process;
         [ObservableProperty]
         private string _FileSize;
+        [ObservableProperty]
+        private string _State;
         public Visibility Show=> Path.GetExtension(this.Value.ToString()).Contains(".zipmod")?Visibility.Visible:Visibility.Collapsed;
-        public string State => Process >= 100 ? "下载完成" : "下载中";
     }
 }

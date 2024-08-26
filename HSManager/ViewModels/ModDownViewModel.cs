@@ -23,8 +23,12 @@ namespace HSManager.ViewModels
             HttpSchedule.ReceiveAction = new((item, obj) =>
             {
                 ((TreeChild)obj).Process = item;
+                ((TreeChild)obj).State = "下载中";
                 if (item == 100d)
+                {
+                    ((TreeChild)obj).State = "下载完成";
                     _DownCount -= 1;
+                }
             });
         }
 
