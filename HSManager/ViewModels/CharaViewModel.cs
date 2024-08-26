@@ -28,20 +28,27 @@ namespace HSManager.ViewModels
         private CharaDataInfo _Chara;
 
         [RelayCommand]
-        public void Export() 
+        public void Export()
+        {
+            var path = ExportPng();
+            if (!path.IsNullOrEmpty())
+                Process.Start("explorer.exe", path);
+        }
+
+        public string ExportPng()
         {
             var data = DependencyTool.Resolve<ModPreViewModel>().MemeryData;
-            if (data.Count <= 0) return;
-            if (Soft.Default.CharaExportRoute.IsNullOrEmpty()) return;
-            if (_File.IsNullOrEmpty()) return;
+            if (data.Count <= 0) return string.Empty;
+            if (Soft.Default.CharaExportRoute.IsNullOrEmpty()) return string.Empty;
+            if (_File.IsNullOrEmpty()) return string.Empty;
             var root = SyncStatic.CreateDir(Path.Combine(Soft.Default.CharaExportRoute, Path.GetFileName(_File).Split(".").First()));
             foreach (var item in Chara.ModInfo)
             {
                 var source = data.FirstOrDefault(t => t.Guid.ToUpper().Equals(item.ToUpper()));
-                if(source==null) continue;
+                if (source == null) continue;
                 if (!source.Route.IsNullOrEmpty())
                 {
-                    File.Copy(source.Route, Path.Combine(SyncStatic.CreateDir(Path.Combine(root, "mod")), $"{item}.zipmod"),true);
+                    File.Copy(source.Route, Path.Combine(SyncStatic.CreateDir(Path.Combine(root, "mod")), $"{item}.zipmod"), true);
                 }
                 var _3d = source.U3d;
                 if (_3d.Count > 0)
@@ -55,7 +62,8 @@ namespace HSManager.ViewModels
                 }
             }
 
-            Process.Start("explorer.exe", root);
+            File.Copy(_File, Path.Combine(root, Path.GetFileName(_File)), true);
+            return root;
         }
 
         public void LoadPng(string files)
@@ -68,11 +76,13 @@ namespace HSManager.ViewModels
 
             Chara = PngFileTool.ReadCharaInfo(bytes);
 
+            if (Chara == null) return;
+
             var data = DependencyTool.Resolve<ModPreViewModel>().MemeryData;
 
             Chara.ModInfo.ToList().ForEach(item =>
             {
-                if (data.Count<=0)
+                if (data.Count <= 0)
                 {
                     MissMod.Add(item);
                     return;

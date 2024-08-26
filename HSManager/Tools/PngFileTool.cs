@@ -81,83 +81,91 @@ namespace HSManager.Tools
         }
         public static CharaDataInfo ReadCharaInfo(byte[] bytes)
         {
-            using Stream stream = new MemoryStream(bytes);
-            using var reader = new BinaryReader(stream);
-            var pngEnd = SearchForPngEnd(stream);
-
-            if (pngEnd == -1 || pngEnd >= stream.Length)
-                return null;
-            stream.Position = pngEnd;
-
-            var loadProductNo = reader.ReadInt32();
-            var marker = reader.ReadString();
-            var version = reader.ReadString();
-            var language = reader.ReadInt32();
-            var userID = reader.ReadString();
-            var dataID = reader.ReadString();
-            var count = reader.ReadInt32();
-            var databyte = reader.ReadBytes(count);
-            var blockHeader = MessagePackSerializer.Deserialize<CharaInfo>(databyte);
-            var num = reader.ReadInt64();
-            var position = reader.BaseStream.Position;
-
-            var info = blockHeader.lstInfo.First(t => t.name == "KKEx");
-
-            Dictionary<string, PluginData> extData = null;
-            if (info != null)
+            try
             {
-                reader.BaseStream.Seek(position + info.pos, SeekOrigin.Begin);
-                var parameterBytes = reader.ReadBytes((int)info.size);
-                extData = MessagePackSerializer.Deserialize<Dictionary<string, PluginData>>(parameterBytes);
-            }
+                using Stream stream = new MemoryStream(bytes);
+                using var reader = new BinaryReader(stream);
+                var pngEnd = SearchForPngEnd(stream);
 
-            foreach (var data in extData.Values.Where(t => t != null))
-            {
-                DeserializeObjects(data);
-            }
-            var PluginInfo = extData.Keys.ToList();
-            var ModsInfo = extData.Where(t => t.Value != null).SelectMany(x => x.Value.RequiredZipmodGUIDs).Distinct().ToList();
+                if (pngEnd == -1 || pngEnd >= stream.Length)
+                    return null;
+                stream.Position = pngEnd;
 
-            CharaDataInfo chara = new CharaDataInfo();
-            chara.PluginInfo = new(PluginInfo);
-            chara.ModInfo = new(ModsInfo);
-            return chara;
+                var loadProductNo = reader.ReadInt32();
+                var marker = reader.ReadString();
+                var version = reader.ReadString();
+                var language = reader.ReadInt32();
+                var userID = reader.ReadString();
+                var dataID = reader.ReadString();
+                var count = reader.ReadInt32();
+                var databyte = reader.ReadBytes(count);
+                var blockHeader = MessagePackSerializer.Deserialize<CharaInfo>(databyte);
+                var num = reader.ReadInt64();
+                var position = reader.BaseStream.Position;
+
+                var info = blockHeader.lstInfo.First(t => t.name == "KKEx");
+
+                Dictionary<string, PluginData> extData = null;
+                if (info != null)
+                {
+                    reader.BaseStream.Seek(position + info.pos, SeekOrigin.Begin);
+                    var parameterBytes = reader.ReadBytes((int)info.size);
+                    extData = MessagePackSerializer.Deserialize<Dictionary<string, PluginData>>(parameterBytes);
+                }
+
+                foreach (var data in extData.Values.Where(t => t != null))
+                {
+                    DeserializeObjects(data);
+                }
+                var PluginInfo = extData.Keys.ToList();
+                var ModsInfo = extData.Where(t => t.Value != null).SelectMany(x => x.Value.RequiredZipmodGUIDs).Distinct().ToList();
+
+                CharaDataInfo chara = new CharaDataInfo();
+                chara.PluginInfo = new(PluginInfo);
+                chara.ModInfo = new(ModsInfo);
+                return chara;
+            }
+            catch { return null; }
         }
 
         public static List<Dictionary<string, string>> ReadSceneInfo(byte[] bytes)
         {
 
-            List<Dictionary<string, string>> sb = new List<Dictionary<string, string>>();
-
-            var Charas = Encoding.ASCII.GetString(bytes).WithRegex("universalautoresolver\\W+itemInfo[a-zA-Z0-9\\s\\S!@#$%^&*()]+")
-                .Replace("\0", "").Replace(">", "").Replace("\r", "").Replace("\n", "")
-                .Split("?", StringSplitOptions.RemoveEmptyEntries)
-                .Where(t => !t.IsNullOrEmpty()).Where(t => Regex.IsMatch(t, "[a-zA-Z0-9]+")).ToList();
-
-            Charas.ForEnumerEach((node, index) =>
+            try
             {
+                List<Dictionary<string, string>> sb = new List<Dictionary<string, string>>();
 
-                if (node.ToUpper() == "MODID")
+                var Charas = Encoding.ASCII.GetString(bytes).WithRegex("universalautoresolver\\W+itemInfo[a-zA-Z0-9\\s\\S!@#$%^&*()]+")
+                    .Replace("\0", "").Replace(">", "").Replace("\r", "").Replace("\n", "")
+                    .Split("?", StringSplitOptions.RemoveEmptyEntries)
+                    .Where(t => !t.IsNullOrEmpty()).Where(t => Regex.IsMatch(t, "[a-zA-Z0-9]+")).ToList();
+
+                Charas.ForEnumerEach((node, index) =>
                 {
-                    var data = Regex.Replace(Charas.ElementAtOrDefault(index + 1), "[!|@|#|&|*|?|^|$]", "");
-                    sb.Add(new Dictionary<string, string> { { "ModId", data } });
-                }
 
-                if (node.ToUpper() == "AUTHOR")
-                {
-                    var data = Regex.Replace(Charas.ElementAtOrDefault(index + 1), "[!|@|#|&|*|?|^|$]", "");
-                    sb.Add(new Dictionary<string, string> { { "Author", data } });
-                }
+                    if (node.ToUpper() == "MODID")
+                    {
+                        var data = Regex.Replace(Charas.ElementAtOrDefault(index + 1), "[!|@|#|&|*|?|^|$]", "");
+                        sb.Add(new Dictionary<string, string> { { "ModId", data } });
+                    }
 
-                if (node.ToUpper() == "NAME")
-                {
-                    var data = Regex.Replace(Charas.ElementAtOrDefault(index + 1), "[!|@|#|&|*|?|^|$]", "");
-                    sb.Add(new Dictionary<string, string> { { "Name", data } });
-                }
+                    if (node.ToUpper() == "AUTHOR")
+                    {
+                        var data = Regex.Replace(Charas.ElementAtOrDefault(index + 1), "[!|@|#|&|*|?|^|$]", "");
+                        sb.Add(new Dictionary<string, string> { { "Author", data } });
+                    }
 
-            });
+                    if (node.ToUpper() == "NAME")
+                    {
+                        var data = Regex.Replace(Charas.ElementAtOrDefault(index + 1), "[!|@|#|&|*|?|^|$]", "");
+                        sb.Add(new Dictionary<string, string> { { "Name", data } });
+                    }
 
-            return sb;
+                });
+
+                return sb;
+            }
+            catch { return null; }
         }
 
         private static void DeserializeObjects(PluginData data)

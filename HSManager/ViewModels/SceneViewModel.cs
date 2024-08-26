@@ -32,6 +32,8 @@ namespace HSManager.ViewModels
 
             var data = PngFileTool.ReadSceneInfo(bytes);
 
+            if (data == null) return;
+
             var pageSize = Math.Ceiling(data.Count / 3d);
 
             for (int i = 0; i < pageSize; i++)

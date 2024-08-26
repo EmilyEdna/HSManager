@@ -27,7 +27,6 @@ namespace HSManager
 
             this.GetType().Assembly.GetTypes()
                 .Where(t => t.BaseType == typeof(ObservableObject))
-                .Where(t => !t.FullName.Contains("Index"))
                 .ForEnumerEach(vm =>
                 {
                     IocDependency.RegisterByNamed(vm,vm.Name);

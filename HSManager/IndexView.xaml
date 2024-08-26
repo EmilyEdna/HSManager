@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:HSManager.ViewModels"
     x:Name="Index"
-    Title="HS2工具箱V1.3 CreateBy EmliyEdna"
+    Title="HS2工具箱V1.4 CreateBy EmliyEdna"
     d:DataContext="{d:DesignInstance vm:IndexViewModel}"
     BlurRadius="0"
     mc:Ignorable="d">
@@ -43,10 +43,14 @@
                     Command="{Binding MenuCommand}"
                     CommandParameter="5"
                     Header="场景卡" />
+                <eda:CandyMenuItem
+                    Command="{Binding MenuCommand}"
+                    CommandParameter="6"
+                    Header="人物管理" />
             </eda:CandyMenuItem>
             <eda:CandyMenuItem
                 Command="{Binding MenuCommand}"
-                CommandParameter="6"
+                CommandParameter="7"
                 Header="设置" />
         </eda:CandyMenu>
     </eda:CandyWindow.MenuBox>

@@ -39,6 +39,11 @@ namespace HSManager.Tools
             }
             if (ctrlType == 6)
             {
+                UCType = typeof(CharasControl);
+                VMType = typeof(CharasViewModel);
+            }
+            if (ctrlType == 7)
+            {
                 UCType = typeof(SoftControl);
                 VMType = typeof(SoftViewModel);
             }
