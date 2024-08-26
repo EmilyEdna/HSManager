@@ -7,7 +7,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
-using System.Windows.Shapes;
 using XExten.Advance.LinqFramework;
 
 namespace HSManager.ViewModels
