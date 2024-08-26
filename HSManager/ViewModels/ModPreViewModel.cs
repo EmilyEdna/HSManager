@@ -17,10 +17,10 @@ namespace HSManager.ViewModels
     public partial class ModPreViewModel : ObservableObject
     {
 
-        private List<ModsInfo> _MemeryData;
+        public List<ModsInfo> MemeryData;
         public ModPreViewModel()
         {
-            _MemeryData = [];
+            MemeryData = [];
             Mods = [];
         }
 
@@ -33,9 +33,10 @@ namespace HSManager.ViewModels
         public string Filter
         {
             get => _Filter;
-            set {
+            set
+            {
                 SetProperty(ref _Filter, value);
-                Mods = new(_MemeryData.Where(t => t.Guid.ToUpper().Contains(value.ToUpper())).ToList());
+                Mods = new(MemeryData.Where(t => t.Guid.ToUpper().Contains(value.ToUpper())).ToList());
             }
         }
 
@@ -81,7 +82,7 @@ namespace HSManager.ViewModels
             EachFolder(Route, files);
             ReadMod(files);
         }
-        private void ReadMod(List<string> files) 
+        private void ReadMod(List<string> files)
         {
             Task.Run(() =>
             {
@@ -112,25 +113,7 @@ namespace HSManager.ViewModels
                                 info.Name = doc.SelectSingleNode("name")?.InnerText?.ToUpper();
                                 info.Author = doc.SelectSingleNode("author")?.InnerText?.ToUpper();
                                 info.Version = doc.SelectSingleNode("version")?.InnerText?.ToUpper();
-
-                                Application.Current.Dispatcher.Invoke(() =>
-                                {
-                                    if (!Mods.Any(t => t.Guid == info.Guid))
-                                        Mods.Add(info);
-                                    else
-                                    {
-                                        var tempm = Mods.FirstOrDefault(t => t.Guid == info.Guid);
-                                        var RV = (ModRepeatViewModel)IocDependency.ResolveByNamed(typeof(ModRepeatViewModel), "ModRepeatViewModel");
-
-                                        if (!RV.Mods.Any(t => t.Guid == tempm.Guid && t.Route == tempm.Route))
-                                            RV.Mods.Add(tempm);
-                                        RV.Mods.Add(info);
-                                    }
-                                });
                             }
-                        }
-                        foreach (ZipEntry entry in zipread)
-                        {
                             if (entry.Name.Contains(".png") || entry.Name.Contains(".jpg"))
                             {
                                 try
@@ -185,39 +168,46 @@ namespace HSManager.ViewModels
                             }
                         }
 
+                        info.U3d = info.U3d.GroupBy(t=>t.Route).Select(t=>t.FirstOrDefault()).ToList();
 
-                        info.U3d = info.U3d.Distinct().ToList();
-
-                        var MV  = (CharaViewModel)IocDependency.ResolveByNamed(typeof(CharaViewModel), "CharaViewModel");
-                        var SV = (SceneViewModel)IocDependency.ResolveByNamed(typeof(SceneViewModel), "SceneViewModel");
-                        if (MV.MissMod != null)
+                        Application.Current.Dispatcher.Invoke(() =>
                         {
-                            MV.MissMod.ToList().ForEach(item =>
+                            if (!Mods.Any(t => t.Guid == info.Guid))
+                                Mods.Add(info);
+                            else
                             {
-                                if (Mods.Any(t => t.Guid.ToUpper().Equals(item.ToUpper())))
-                                {
-                                    MV.MissMod.Remove(item);
-                                }
-                            });
-                        }
-                        if (SV.Scene != null)
-                        {
-                            SV.Scene.ToList().ForEach(item =>
-                            {
-                                if (Mods.Any(t => t.Guid.ToUpper().Equals(item.Guid.ToUpper())))
-                                {
-                                    item.IsMiss = "存在";
-                                }
-                            });
-                        }
-                    }
-                    catch
-                    {
-                    }
+                                var tempm = Mods.FirstOrDefault(t => t.Guid == info.Guid);
+                                var RV = DependencyTool.Resolve<ModRepeatViewModel>();
 
+                                if (!RV.Mods.Any(t => t.Guid == tempm.Guid && t.Route == tempm.Route))
+                                    RV.Mods.Add(tempm);
+                                RV.Mods.Add(info);
+                            }
+                        });
+
+                        var MV = DependencyTool.Resolve<CharaViewModel>();
+                        var SV = DependencyTool.Resolve<SceneViewModel>();
+
+                        MV.MissMod?.ForEnumerEach(item =>
+                        {
+                            if (Mods.Any(t => t.Guid.ToUpper().Equals(item.ToUpper())))
+                            {
+                                MV.MissMod.Remove(item);
+                            }
+                        });
+                        SV.Scene?.ForEnumerEach(item =>
+                        {
+                            if (Mods.Any(t => t.Guid.ToUpper().Equals(item.Guid.ToUpper())))
+                            {
+                                item.IsMiss = "存在";
+                            }
+                        });
+
+                    }
+                    catch { }
                 });
 
-                _MemeryData = Mods.ToList();
+                MemeryData = [.. Mods];
             });
 
         }

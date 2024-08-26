@@ -14,13 +14,13 @@ namespace HSManager.ViewModels
     {
         private List<TreeChild> _MemeryDic;
         private Queue<TreeChild> _DownQueue;
-        private int _DownCount = 0;
+        private static int _DownCount = 0;
         public ModDownViewModel()
         {
             _MemeryDic = [];
             _DownQueue = [];
             LoadModWebSite();
-            DependencyTool.ReceiveAction = new((item, obj) =>
+            HttpSchedule.ReceiveAction = new((item, obj) =>
             {
                 ((TreeChild)obj).Process = item;
                 if (item == 100d)
@@ -101,7 +101,7 @@ namespace HSManager.ViewModels
 
                         var FILE = Path.Combine(Soft.Default.SaveRoute, Path.GetFileName(URI));
 
-                        DependencyTool.HttpDownload(URI, FILE, Child);
+                        HttpSchedule.HttpDownload(URI, FILE, Child);
                         _DownCount++;
                     }
                 }

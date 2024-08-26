@@ -37,8 +37,8 @@ namespace HSManager.ViewModels
                 if (Directory.GetFiles(Path).Any(t => t.Contains(_GameName)))
                     Model.Game = Path;
             }
-            if (type == 2)
-                if (type == 3) Model.CharaImport = Path;
+            if (type == 2) Model.CharaExport = Path;
+            if (type == 3) Model.CharaImport = Path;
             if (type == 4) Model.Save = Path;
 
             Soft.Default.GameRoute = Model.Game;
@@ -48,6 +48,6 @@ namespace HSManager.ViewModels
             Soft.Default.Save();
         }
 
-       
+
     }
 }

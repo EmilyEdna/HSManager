@@ -26,7 +26,8 @@
             <TextBox
                 Height="20"
                 Tag="游戏路径"
-                Text="{Binding Model.Game}" />
+                Text="{Binding Model.Game}"
+                ToolTip="游戏路径" />
             <eda:CandyButton
                 Height="20"
                 Command="{Binding RouteCommand}"
@@ -42,7 +43,8 @@
             <TextBox
                 Height="20"
                 Tag="人物Mod导出路径"
-                Text="{Binding Model.CharaExport}" />
+                Text="{Binding Model.CharaExport}"
+                ToolTip="人物Mod导出路径" />
             <eda:CandyButton
                 Height="20"
                 Command="{Binding RouteCommand}"
@@ -58,7 +60,8 @@
             <TextBox
                 Height="20"
                 Tag="人物卡导入路径"
-                Text="{Binding Model.CharaImport}" />
+                Text="{Binding Model.CharaImport}"
+                ToolTip="人物卡导入路径" />
             <eda:CandyButton
                 Height="20"
                 Command="{Binding RouteCommand}"
@@ -74,7 +77,8 @@
             <TextBox
                 Height="20"
                 Tag="Mod下载路径"
-                Text="{Binding Model.Save}" />
+                Text="{Binding Model.Save}"
+                ToolTip="Mod下载路径" />
             <eda:CandyButton
                 Height="20"
                 Command="{Binding RouteCommand}"

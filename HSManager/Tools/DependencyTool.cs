@@ -1,15 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using HSManager.UserControls;
+﻿using HSManager.UserControls;
 using HSManager.ViewModels;
 using Microsoft.Win32;
-using System.IO;
-using System.Net.Http.Headers;
-using System.Net.Http;
 using System.Windows.Controls;
 using XExten.Advance.IocFramework;
-using XExten.Advance.NetFramework;
-using XExten.Advance.StaticFramework;
-using System.Net.Http.Handlers;
 
 namespace HSManager.Tools
 {
@@ -66,21 +59,10 @@ namespace HSManager.Tools
             else return null;
         }
 
-        public static Action<double, object> ReceiveAction { get; set; }
-        public static async void HttpDownload(string uri, string file, object obj = null, Action<HttpRequestHeaders> action = null)
+        public static T Resolve<T>() where T : class
         {
-            var ProgressHandler = new ProgressMessageHandler(new HttpClientHandler());
-            ProgressHandler.HttpReceiveProgress += (sender, e) =>
-            {
-                ReceiveAction?.Invoke(double.Parse(e.ProgressPercentage.ToString("F2")), obj);
-            };
-            HttpClient Client = new HttpClient(ProgressHandler);
-            Client.DefaultRequestHeaders.Add(ConstDefault.UserAgent, ConstDefault.UserAgentValue);
-            action?.Invoke(Client.DefaultRequestHeaders);
-            var stream = await Client.GetStreamAsync(uri);
-            SyncStatic.DeleteFile(file);
-            using FileStream fs = new FileStream(file, FileMode.CreateNew);
-            await stream.CopyToAsync(fs);
+            var type = typeof(T);
+            return (T)IocDependency.ResolveByNamed(type, type.Name);
         }
     }
 }
