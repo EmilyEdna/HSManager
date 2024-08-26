@@ -3,6 +3,10 @@ using HSManager.ObjectModels;
 using MessagePack;
 using Org.BouncyCastle.Utilities;
 using System.IO;
+using System.Text.RegularExpressions;
+using System.Text;
+using XExten.Advance.LinqFramework;
+using Newtonsoft.Json.Linq;
 
 namespace HSManager.Tools
 {
@@ -75,7 +79,7 @@ namespace HSManager.Tools
             stream.Read(buffer, 0, buffer.Length);
             return buffer;
         }
-        public static CharaDataInfo ReadInfo(byte[] bytes) 
+        public static CharaDataInfo ReadCharaInfo(byte[] bytes)
         {
             using Stream stream = new MemoryStream(bytes);
             using var reader = new BinaryReader(stream);
@@ -97,7 +101,7 @@ namespace HSManager.Tools
             var num = reader.ReadInt64();
             var position = reader.BaseStream.Position;
 
-            var info = blockHeader.lstInfo.First(t=>t.name== "KKEx");
+            var info = blockHeader.lstInfo.First(t => t.name == "KKEx");
 
             Dictionary<string, PluginData> extData = null;
             if (info != null)
@@ -114,10 +118,46 @@ namespace HSManager.Tools
             var PluginInfo = extData.Keys.ToList();
             var ModsInfo = extData.Where(t => t.Value != null).SelectMany(x => x.Value.RequiredZipmodGUIDs).Distinct().ToList();
 
-            CharaDataInfo chara =new CharaDataInfo();
+            CharaDataInfo chara = new CharaDataInfo();
             chara.PluginInfo = new(PluginInfo);
             chara.ModInfo = new(ModsInfo);
             return chara;
+        }
+
+        public static List<Dictionary<string, string>> ReadSceneInfo(byte[] bytes)
+        {
+
+            List<Dictionary<string, string>> sb = new List<Dictionary<string, string>>();
+
+            var Charas = Encoding.ASCII.GetString(bytes).WithRegex("universalautoresolver\\W+itemInfo[a-zA-Z0-9\\s\\S!@#$%^&*()]+")
+                .Replace("\0", "").Replace(">", "").Replace("\r", "").Replace("\n", "")
+                .Split("?", StringSplitOptions.RemoveEmptyEntries)
+                .Where(t => !t.IsNullOrEmpty()).Where(t => Regex.IsMatch(t, "[a-zA-Z0-9]+")).ToList();
+
+            Charas.ForEnumerEach((node, index) =>
+            {
+
+                if (node.ToUpper() == "MODID")
+                {
+                    var data = Regex.Replace(Charas.ElementAtOrDefault(index + 1), "[!|@|#|&|*|?|^|$]", "");
+                    sb.Add(new Dictionary<string, string> { { "ModId", data } });
+                }
+
+                if (node.ToUpper() == "AUTHOR")
+                {
+                    var data = Regex.Replace(Charas.ElementAtOrDefault(index + 1), "[!|@|#|&|*|?|^|$]", "");
+                    sb.Add(new Dictionary<string, string> { { "Author", data } });
+                }
+
+                if (node.ToUpper() == "NAME")
+                {
+                    var data = Regex.Replace(Charas.ElementAtOrDefault(index + 1), "[!|@|#|&|*|?|^|$]", "");
+                    sb.Add(new Dictionary<string, string> { { "Name", data } });
+                }
+
+            });
+
+            return sb;
         }
 
         private static void DeserializeObjects(PluginData data)

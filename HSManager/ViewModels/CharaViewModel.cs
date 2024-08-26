@@ -66,7 +66,7 @@ namespace HSManager.ViewModels
 
             Source = SKBitmap.Decode(bytes).Resize(new SKImageInfo(250, 350), SKFilterQuality.High);
 
-            Chara = PngFileTool.ReadInfo(bytes);
+            Chara = PngFileTool.ReadCharaInfo(bytes);
 
             var data = DependencyTool.Resolve<ModPreViewModel>().MemeryData;
 
