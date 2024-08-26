@@ -17,7 +17,14 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel Margin="10,3" HorizontalAlignment="Right">
+        <StackPanel
+            Margin="10,3"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <eda:CandyButton
+                Height="20"
+                Command="{Binding LoadCommand}"
+                Content="加载" />
             <eda:CandyButton
                 Height="20"
                 Command="{Binding BatchCommand}"
