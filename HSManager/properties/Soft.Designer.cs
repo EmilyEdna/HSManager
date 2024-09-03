@@ -70,5 +70,17 @@ namespace HSManager.properties {
                 this["CharaImportRoute"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UnpackUnity3D {
+            get {
+                return ((bool)(this["UnpackUnity3D"]));
+            }
+            set {
+                this["UnpackUnity3D"] = value;
+            }
+        }
     }
 }

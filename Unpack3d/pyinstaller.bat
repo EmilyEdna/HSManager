@@ -1,0 +1,1 @@
+pyinstaller -D -p D:\Project\HSManager\Unpack3d\env\Lib\site-packages --add-binary="D:\Project\HSManager\Unpack3d\env\Lib\site-packages\UnityPy\resources\uncompressed.tpk;.\UnityPy\resources" -F D:\Project\HSManager\Unpack3d\Unpack3d.py

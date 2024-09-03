@@ -2,6 +2,7 @@
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,8 @@ namespace HSManager.ObjectModels
         [ObservableProperty]
         private SKBitmap _PreImage;
         public List<U3d> U3d { get; set; }
+        [ObservableProperty]
+        private ObservableCollection<SKBitmap> _Assets;
     }
     public class U3d
     {

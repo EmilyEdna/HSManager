@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using HSManager.ObjectModels;
 using HSManager.properties;
 using HSManager.Tools;
-using Microsoft.Win32;
 using System.IO;
 using XExten.Advance.LinqFramework;
 
@@ -21,6 +20,7 @@ namespace HSManager.ViewModels
             Model.CharaImport = Soft.Default.CharaImportRoute;
             Model.CharaExport = Soft.Default.CharaExportRoute;
             Model.Save = Soft.Default.SaveRoute;
+            Model.UnityUnpack = Soft.Default.UnpackUnity3D;
         }
 
         [ObservableProperty]
@@ -29,25 +29,28 @@ namespace HSManager.ViewModels
         [RelayCommand]
         public void Route(string cate)
         {
-            var Path = DependencyTool.GetRoute();
-            if (Path.IsNullOrEmpty()) return;
             var type = cate.AsInt();
-            if (type == 1)
+            if (type != 5)
             {
-                if (Directory.GetFiles(Path).Any(t => t.Contains(_GameName)))
-                    Model.Game = Path;
-            }
-            if (type == 2) Model.CharaExport = Path;
-            if (type == 3) Model.CharaImport = Path;
-            if (type == 4) Model.Save = Path;
+                var Path = DependencyTool.GetRoute();
+                if (Path.IsNullOrEmpty()) return;
 
+                if (type == 1)
+                {
+                    if (Directory.GetFiles(Path).Any(t => t.Contains(_GameName)))
+                        Model.Game = Path;
+                }
+                if (type == 2) Model.CharaExport = Path;
+                if (type == 3) Model.CharaImport = Path;
+                if (type == 4) Model.Save = Path;
+            }
             Soft.Default.GameRoute = Model.Game;
             Soft.Default.CharaImportRoute = Model.CharaImport;
             Soft.Default.CharaExportRoute = Model.CharaExport;
             Soft.Default.SaveRoute = Model.Save;
+            Soft.Default.UnpackUnity3D= Model.UnityUnpack;
             Soft.Default.Save();
         }
-
 
     }
 }

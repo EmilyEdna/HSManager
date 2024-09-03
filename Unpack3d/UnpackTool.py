@@ -1,4 +1,5 @@
 import io
+import string
 import UnityPy
 import base64
 from zipfile import ZipFile
@@ -28,7 +29,7 @@ class UnpackTool(object):
         return bytesArr
 
 
-    def UnpackUnityAssestZipmod(self,unityFile:str)->list:
+    def UnpackUnityAssestZipmod(self,unityFile:str)->str:
         bytesArr =[]
         if not unityFile.endswith(".zipmod"):
            return bytesArr
@@ -48,4 +49,4 @@ class UnpackTool(object):
                 bytesArr.append(b64)
 
             z.close()
-        return bytesArr
+        return ",".join(bytesArr)

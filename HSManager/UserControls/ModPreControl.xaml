@@ -118,12 +118,20 @@
                                         Text="{Binding Route}" />
                                 </StackPanel>
                             </StackPanel>
-                            <eda:CandyButton
-                                Grid.Column="2"
-                                Width="95"
-                                Command="{Binding DataContext.RenameCommand, ElementName=Index}"
-                                CommandParameter="{Binding .}"
-                                Content="重命名" />
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                <eda:CandyButton
+                                    Width="95"
+                                    Command="{Binding DataContext.RenameCommand, ElementName=Index}"
+                                    CommandParameter="{Binding .}"
+                                    Content="重命名" />
+                                <eda:CandyButton
+                                    Width="95"
+                                    Margin="0,3,0,0"
+                                    ButtonType="Success"
+                                    Command="{Binding DataContext.AssetCommand, ElementName=Index}"
+                                    CommandParameter="{Binding Assets}"
+                                    Content="Unity3d资源" />
+                            </StackPanel>
                         </Grid>
                     </eda:CandyBeveledBorder>
                 </DataTemplate>

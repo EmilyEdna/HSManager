@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Configuration;
+using HSManager.Tools;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,7 +32,15 @@ namespace HSManager
                     IocDependency.RegisterByNamed(vm,vm.Name);
                 });
 
+            UnpackTools.CreateUnpackPython3D();
         }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            UnpackTools.RemoveUnpackPython3D();
+            base.OnExit(e);
+        }
+
     }
 
 }

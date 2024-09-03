@@ -17,6 +17,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel
             Margin="10,0"
@@ -70,7 +71,7 @@
         </StackPanel>
         <StackPanel
             Grid.Row="3"
-            Margin="10,0"
+            Margin="10,0,10,5"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Orientation="Horizontal">
@@ -84,6 +85,21 @@
                 Command="{Binding RouteCommand}"
                 CommandParameter="4"
                 Content="选择路径" />
+        </StackPanel>
+        <StackPanel
+            Grid.Row="4"
+            Margin="10,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <CheckBox
+                VerticalContentAlignment="Center"
+                Command="{Binding RouteCommand}"
+                CommandParameter="5"
+                Content="是否启用Unity解包功能"
+                FontSize="16"
+                Foreground="White"
+                IsChecked="{Binding Model.UnityUnpack}" />
         </StackPanel>
     </Grid>
 </UserControl>

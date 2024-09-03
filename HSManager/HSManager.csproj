@@ -11,10 +11,15 @@
 
 	<ItemGroup>
 	  <None Remove="Back.png" />
+	  <None Remove="Unpack3d.exe" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Content Include="Icon.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Unpack3d.exe" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />

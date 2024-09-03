@@ -37,6 +37,11 @@
                 AllowDrop="True"
                 Background="#33FFD0FB"
                 Drop="DropImgEvent">
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Style="{DynamicResource lbl}"
+                    Text="拖入人物卡" />
                 <skia:SKImageView Source="{Binding Source}" />
             </Grid>
             <eda:CandyTabControl

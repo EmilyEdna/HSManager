@@ -17,5 +17,7 @@ namespace HSManager.ObjectModels
         private string _CharaExport;
         [ObservableProperty]
         private string _CharaImport;
+        [ObservableProperty]
+        private bool _UnityUnpack;
     }
 }
