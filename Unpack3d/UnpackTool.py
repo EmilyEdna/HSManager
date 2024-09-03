@@ -29,7 +29,7 @@ class UnpackTool(object):
         return bytesArr
 
 
-    def UnpackUnityAssestZipmod(self,unityFile:str)->str:
+    def UnpackUnityAssestZipmod(self,unityFile:str)->list:
         bytesArr =[]
         if not unityFile.endswith(".zipmod"):
            return bytesArr
@@ -49,4 +49,4 @@ class UnpackTool(object):
                 bytesArr.append(b64)
 
             z.close()
-        return ",".join(bytesArr)
+        return bytesArr
