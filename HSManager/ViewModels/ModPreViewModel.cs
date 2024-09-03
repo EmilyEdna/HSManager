@@ -79,20 +79,17 @@ namespace HSManager.ViewModels
         public void Asset(ModsInfo mods)
         {
             //解包Unity3D通过调用Python
-            if (Soft.Default.UnpackUnity3D)
+            if (Soft.Default.UnpackUnity3D && (mods.Assets == null || mods.Assets.Count <= 0) && !locker)
             {
-                if (!locker)
+                if (mods.U3d.Count > 0)
                 {
-                    if (mods.U3d.Count > 0)
-                    {
-                        locker = true;
-                        UnpackTools.RunPython(mods.U3d.First().Route, mods);
-                    }
-                    else
-                    {
-                        locker = true;
-                        UnpackTools.RunPython(mods.Route, mods);
-                    }
+                    locker = true;
+                    UnpackTools.RunPython(mods.U3d.First().Route, mods);
+                }
+                else
+                {
+                    locker = true;
+                    UnpackTools.RunPython(mods.Route, mods);
                 }
             }
 
