@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:HSManager.ViewModels"
     x:Name="Index"
-    Title="HS2工具箱V1.4 CreateBy EmliyEdna"
+    Title="HS2工具箱V1.5 CreateBy EmliyEdna"
     d:DataContext="{d:DesignInstance vm:IndexViewModel}"
     BlurRadius="0"
     mc:Ignorable="d">

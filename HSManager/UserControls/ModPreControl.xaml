@@ -129,7 +129,7 @@
                                     Margin="0,3,0,0"
                                     ButtonType="Success"
                                     Command="{Binding DataContext.AssetCommand, ElementName=Index}"
-                                    CommandParameter="{Binding Assets}"
+                                    CommandParameter="{Binding .}"
                                     Content="Unity3d资源" />
                             </StackPanel>
                         </Grid>

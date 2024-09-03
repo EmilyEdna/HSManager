@@ -4,7 +4,6 @@ using HSManager.ObjectModels;
 using HSManager.properties;
 using HSManager.Tools;
 using ICSharpCode.SharpZipLib.Zip;
-using Org.BouncyCastle.Utilities;
 using SkiaSharp;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -17,6 +16,7 @@ namespace HSManager.ViewModels
     public partial class ModPreViewModel : ObservableObject
     {
 
+        private bool locker;
         public List<ModsInfo> MemeryData;
         public ModPreViewModel()
         {
@@ -29,7 +29,6 @@ namespace HSManager.ViewModels
         private ObservableCollection<ModsInfo> _Mods;
         [ObservableProperty]
         private string _Route;
-
         private string _Filter;
         public string Filter
         {
@@ -77,12 +76,30 @@ namespace HSManager.ViewModels
         }
 
         [RelayCommand]
-        public void Asset(ObservableCollection<SKBitmap> data)
+        public void Asset(ModsInfo mods)
         {
-            if (data != null && data.Count > 0)
+            //解包Unity3D通过调用Python
+            if (Soft.Default.UnpackUnity3D)
+            {
+                if (!locker)
+                {
+                    if (mods.U3d.Count > 0)
+                    {
+                        locker = true;
+                        UnpackTools.RunPython(mods.U3d.First().Route, mods);
+                    }
+                    else
+                    {
+                        locker = true;
+                        UnpackTools.RunPython(mods.Route, mods);
+                    }
+                }
+            }
+
+            if (mods.Assets != null && mods.Assets.Count > 0)
             {
                 var win = new ModalView();
-                win.SetListData(data);
+                win.SetListData(mods.Assets);
                 win.Show();
             }
             else
@@ -223,30 +240,6 @@ namespace HSManager.ViewModels
                     catch { }
                 });
 
-                Task.Run(() =>
-                {
-                    Mods.ForEnumerEachAsync(async item =>
-                    {
-                        //解包Unity3D通过调用Python
-                        if (Soft.Default.UnpackUnity3D)
-                        {
-                            if (item.U3d.Count > 0)
-                            {
-                                await item.U3d.ForEnumerEachAsync(async (node, index) =>
-                                {
-                                    UnpackTools.RunPython(node.Route, item);
-                                    await Task.Delay(2000);
-                                });
-                            }
-                            else
-                            {
-                                UnpackTools.RunPython(item.Route, item);
-                                await Task.Delay(2000);
-                            }
-                        }
-
-                    });
-                });
                 MemeryData = [.. Mods];
             });
 
@@ -278,6 +271,7 @@ namespace HSManager.ViewModels
 
             if (obj != null) ((ModsInfo)obj).Assets = new(bits);
 
+            locker = false;
         }
     }
 }
