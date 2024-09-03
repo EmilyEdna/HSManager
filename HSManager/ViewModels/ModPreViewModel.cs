@@ -260,6 +260,8 @@ namespace HSManager.ViewModels
 
         private void UnpackPythonData(string datas, object obj)
         {
+            if (datas.Contains("[]"))
+                return;
             var bits = datas.Split(",")
               .Select(t => t.Replace("b'", "").Replace("'", "").Replace("[", "").Replace("]", "").Trim())
               .Select(Convert.FromBase64String)

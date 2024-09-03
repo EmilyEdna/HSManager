@@ -9,7 +9,7 @@ class UnpackTool(object):
     def __init__(self) -> None:
         pass
 
-    def UnpackUnityAssest(unityFile:str)->list:
+    def UnpackUnityAssest(self,unityFile:str)->list:
         bytesArr =[]
 
         if not unityFile.endswith(".unity3d"):
