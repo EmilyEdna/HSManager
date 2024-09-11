@@ -23,6 +23,7 @@ namespace HSManager.ViewModels
             UnpackTools.PythonData += UnpackPythonData;
             MemeryData = [];
             Mods = [];
+            Process = 0d;
         }
 
         [ObservableProperty]
@@ -39,6 +40,8 @@ namespace HSManager.ViewModels
                 Mods = new(MemeryData.Where(t => t.Guid.ToUpper().Contains(value.ToUpper())).ToList());
             }
         }
+        [ObservableProperty]
+        private double _Process;
 
         [RelayCommand]
         public void Handle(string cate)
@@ -107,6 +110,13 @@ namespace HSManager.ViewModels
         private void LoadMod()
         {
             List<string> files = [];
+            if (Route.IsNullOrEmpty())
+            {
+                Process = 0d;
+                MemeryData.Clear();
+                Mods.Clear();
+                return;
+            }
             Directory.GetFiles(Route).Where(t => Path.GetExtension(t).ToLower().Contains("zipmod")).ForEnumerEach(files.Add);
             EachFolder(Route, files);
             ReadMod(files);
@@ -235,6 +245,9 @@ namespace HSManager.ViewModels
 
                     }
                     catch { }
+
+                    //每一个占用的长度
+                    Process = info.Index * Math.Round(700d / files.Count, 2);
                 });
 
                 MemeryData = [.. Mods];

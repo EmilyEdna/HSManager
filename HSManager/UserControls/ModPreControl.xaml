@@ -17,6 +17,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <StackPanel
@@ -47,9 +48,23 @@
                 CommandParameter="2"
                 Content="批量重命名" />
         </StackPanel>
-        <ListBox
+        <StackPanel
             Grid.Row="2"
-            Margin="5"
+            Margin="10,3"
+            Orientation="Horizontal">
+            <TextBlock
+                HorizontalAlignment="Left"
+                Style="{DynamicResource lbl}"
+                Text="进度条：" />
+            <Border
+                Width="{Binding Process, IsAsync=True}"
+                Height="10"
+                MaxWidth="700"
+                Background="White" />
+        </StackPanel>
+        <ListBox
+            Grid.Row="3"
+            Margin="3"
             Background="Transparent"
             BorderThickness="0"
             ItemsSource="{Binding Mods}">

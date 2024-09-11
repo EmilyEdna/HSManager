@@ -23,9 +23,9 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-		<PackageReference Include="HtmlAgilityPack" Version="1.11.64" />
+		<PackageReference Include="HtmlAgilityPack" Version="1.11.65" />
 		<PackageReference Include="SharpZipLib" Version="1.4.2" />
-		<PackageReference Include="XExten.WPFControls" Version="1.0.6.2" />
+		<PackageReference Include="XExten.WPFControls" Version="1.0.6.5" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Resource Include="Back.png" />
