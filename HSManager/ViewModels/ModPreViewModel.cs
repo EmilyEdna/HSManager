@@ -103,7 +103,7 @@ namespace HSManager.ViewModels
                 win.Show();
             }
             else
-                MessageBox.Show("请等待Unity解包完成后重试！","提示",MessageBoxButton.OK);
+                MessageBox.Show("请等待Unity解包完成后重试！", "提示", MessageBoxButton.OK);
 
         }
 
@@ -183,9 +183,10 @@ namespace HSManager.ViewModels
                                 {
                                     Dictionary<string, string> keyValues = new Dictionary<string, string>();
 
-                                    node.Split(",").ForEnumerEach((n, i) =>
+                                    node.Split(",").Where(t => !t.IsNullOrEmpty()).ForEnumerEach((n, i) =>
                                     {
-                                        keyValues.Add(Keys[i].ToLower(), n);
+                                        if (!keyValues.ContainsKey(Keys[i].ToLower()))
+                                            keyValues.Add(Keys[i].ToLower(), n);
                                     });
 
                                     datas.Add(keyValues);
@@ -195,20 +196,25 @@ namespace HSManager.ViewModels
                                 datas.ForEach(t =>
                                 {
 
-                                    var key = t.Keys.First(t => t == "mainab");
-                                    if (t[key].Contains("chara") && !Soft.Default.GameRoute.IsNullOrEmpty())
+                                    var key = t.Keys.FirstOrDefault(t => t == "mainab");
+                                    if (!key.IsNullOrEmpty())
                                     {
-                                        U3d _3d = new U3d();
-                                        _3d.SortRoute = Path.Combine("abdata", t[key]).Replace("/", "\\");
-                                        _3d.Route = Path.Combine(Soft.Default.GameRoute, _3d.SortRoute);
-                                        if (File.Exists(_3d.Route))
-                                            info.U3d.Add(_3d);
+                                        if (t[key].Contains("chara") && !Soft.Default.GameRoute.IsNullOrEmpty())
+                                        {
+                                            U3d _3d = new U3d();
+                                            _3d.SortRoute = Path.Combine("abdata", t[key]).Replace("/", "\\");
+                                            _3d.Route = Path.Combine(Soft.Default.GameRoute, _3d.SortRoute);
+                                            if (File.Exists(_3d.Route))
+                                                info.U3d.Add(_3d);
+                                        }
                                     }
                                 });
+
                             }
                         }
 
-                        info.U3d = info.U3d.GroupBy(t => t.Route).Select(t => t.FirstOrDefault()).ToList();
+                        if (info.U3d.Count > 0)
+                            info.U3d = info.U3d.GroupBy(t => t.Route).Select(t => t.FirstOrDefault()).ToList();
 
                         Application.Current.Dispatcher.Invoke(() =>
                         {
